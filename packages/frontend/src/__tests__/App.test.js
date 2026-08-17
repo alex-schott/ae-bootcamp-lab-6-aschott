@@ -232,4 +232,53 @@ describe('App Component', () => {
     fireEvent.click(themToggleAfter);
     expect(localStorage.getItem('todoAppTheme')).toBe('light');
   });
+
+  test('shows the Overdue badge for a past-due, incomplete todo on load', async () => {
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Learn React')).toBeInTheDocument();
+    });
+
+    // Seed data has "Learn React" due 2025-12-15, which is in the past.
+    expect(screen.getByText(/overdue/i)).toBeInTheDocument();
+  });
+
+  test('removes the Overdue badge immediately when the todo is marked complete', async () => {
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Learn React')).toBeInTheDocument();
+    });
+    expect(screen.getByText(/overdue/i)).toBeInTheDocument();
+
+    const checkbox = screen.getAllByRole('checkbox')[0];
+    fireEvent.click(checkbox);
+
+    await waitFor(() => {
+      expect(screen.queryByText(/overdue/i)).not.toBeInTheDocument();
+    });
+  });
+
+  test('removes the Overdue badge immediately when the due date is edited to a future date', async () => {
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Learn React')).toBeInTheDocument();
+    });
+    expect(screen.getByText(/overdue/i)).toBeInTheDocument();
+
+    const editButton = screen.getByLabelText('Edit "Learn React"');
+    fireEvent.click(editButton);
+
+    const dueDateInput = screen.getByLabelText('Edit due date');
+    fireEvent.change(dueDateInput, { target: { value: '2099-01-01' } });
+
+    const saveButton = screen.getByRole('button', { name: /Save/ });
+    fireEvent.click(saveButton);
+
+    await waitFor(() => {
+      expect(screen.queryByText(/overdue/i)).not.toBeInTheDocument();
+    });
+  });
 });

@@ -366,6 +366,17 @@ p {
   color: var(--text-secondary);
 }
 
+.todo-overdue-badge {
+  display: inline-block;
+  margin-top: var(--space-xs);
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+  border-radius: var(--radius-sm);
+}
+
 .todo-actions {
   display: flex;
   gap: 8px;

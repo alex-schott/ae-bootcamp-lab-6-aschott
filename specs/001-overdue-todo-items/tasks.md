@@ -28,7 +28,7 @@ This is the existing npm-workspaces monorepo. This feature only touches the fron
 
 **Purpose**: Establish the new module location for the shared date-utility logic.
 
-- [ ] T001 Create the `packages/frontend/src/utils/` directory with a colocated
+- [X] T001 Create the `packages/frontend/src/utils/` directory with a colocated
   `packages/frontend/src/utils/__tests__/` subdirectory, matching the existing test-colocation
   convention used by `packages/frontend/src/components/__tests__/` and
   `packages/frontend/src/services/__tests__/`.
@@ -42,7 +42,7 @@ depend on. No user story work can begin until this is implemented and passing.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 Write unit tests for `isOverdue(todo, today)` in
+- [X] T002 Write unit tests for `isOverdue(todo, today)` in
   `packages/frontend/src/utils/__tests__/todoStatus.test.js`, covering all 6 behavioral
   guarantees from
   [contracts/is-overdue-contract.md](/workspaces/ae-bootcamp-lab-6-aschott/specs/001-overdue-todo-items/contracts/is-overdue-contract.md):
@@ -51,7 +51,7 @@ depend on. No user story work can begin until this is implemented and passing.
   inputs → same output, no throw on a malformed `dueDate` string). Use fixed injected `today`
   values (not real system time) for determinism. Confirm the tests fail (module doesn't exist
   yet).
-- [ ] T003 Implement `isOverdue(todo, today = new Date())` in
+- [X] T003 Implement `isOverdue(todo, today = new Date())` in
   `packages/frontend/src/utils/todoStatus.js` per
   [contracts/is-overdue-contract.md](/workspaces/ae-bootcamp-lab-6-aschott/specs/001-overdue-todo-items/contracts/is-overdue-contract.md)
   and
@@ -75,7 +75,7 @@ complete, some incomplete) and verify only incomplete, past-due todos show the "
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T004 [P] [US1] Add component tests in
+- [X] T004 [P] [US1] Add component tests in
   `packages/frontend/src/components/__tests__/TodoCard.test.js` covering Acceptance Scenarios
   1–5 from spec.md User Story 1: (1) past due date + incomplete → "Overdue" text is rendered;
   (2) due date is today → no "Overdue" text; (3) future due date → no "Overdue" text; (4) past
@@ -85,13 +85,13 @@ complete, some incomplete) and verify only incomplete, past-due todos show the "
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] In `packages/frontend/src/components/TodoCard.js`, import `isOverdue` from
+- [X] T005 [US1] In `packages/frontend/src/components/TodoCard.js`, import `isOverdue` from
   `../utils/todoStatus` and compute an `isOverdue(todo)` boolean in the non-editing render
   branch. (depends on T003, T004)
-- [ ] T006 [US1] In `packages/frontend/src/components/TodoCard.js`, conditionally render a
+- [X] T006 [US1] In `packages/frontend/src/components/TodoCard.js`, conditionally render a
   visible, non-color "⚠ Overdue" text badge inside `.todo-content` (next to the title/due date)
   when the boolean from T005 is `true`; render nothing when `false`. (depends on T005)
-- [ ] T007 [US1] Add `.todo-overdue-badge` styling rules in
+- [X] T007 [US1] Add `.todo-overdue-badge` styling rules in
   `packages/frontend/src/App.css`, reusing the existing `--danger-color` and `--space-xs`
   design tokens from `packages/frontend/src/styles/theme.css`, and confirm WCAG AA contrast in
   both light and dark themes per `docs/ui-guidelines.md`. (depends on T006)
@@ -114,21 +114,21 @@ cases. Then re-open a completed, past-due todo and verify the badge reappears.
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T008 [US2] Add an integration test in `packages/frontend/src/__tests__/App.test.js`: seed
+- [X] T008 [US2] Add an integration test in `packages/frontend/src/__tests__/App.test.js`: seed
   an overdue todo via the mocked `GET /api/todos` response, mark it complete via its checkbox,
   and assert the "Overdue" badge is removed immediately with no reload — Acceptance Scenario 1.
-- [ ] T009 [US2] Add an integration test in `packages/frontend/src/__tests__/App.test.js`: for
+- [X] T009 [US2] Add an integration test in `packages/frontend/src/__tests__/App.test.js`: for
   an overdue todo, use the edit form to change its due date to a future date, save, and assert
   the "Overdue" badge is removed immediately upon save — Acceptance Scenario 2. (same file as
   T008; sequential to avoid conflicting edits)
-- [ ] T010 [P] [US2] Add a component test in
+- [X] T010 [P] [US2] Add a component test in
   `packages/frontend/src/components/__tests__/TodoCard.test.js`: render `TodoCard` with a
   completed, past-due todo (no badge expected), then re-render with the same todo marked
   incomplete, and assert the "Overdue" badge now appears — Acceptance Scenario 3 / edge case.
 
 ### Implementation for User Story 2
 
-- [ ] T011 [US2] Run T008–T010 against the existing re-render behavior from User Story 1 (React
+- [X] T011 [US2] Run T008–T010 against the existing re-render behavior from User Story 1 (React
   re-renders `TodoCard` whenever its `todo` prop changes after toggle/edit). If any test reveals
   stale state (e.g., the badge not updating after a parent state change in
   `packages/frontend/src/App.js` or memoization in
@@ -144,15 +144,17 @@ pass together. Both stories now work independently and in combination.
 
 **Purpose**: Final validation across both user stories.
 
-- [ ] T012 Run `npm test --workspace=frontend -- --coverage` and confirm
-  `packages/frontend/src/utils/todoStatus.js` and the modified branches of
-  `packages/frontend/src/components/TodoCard.js` meet the project's 80%+ coverage target (per
-  `docs/testing-guidelines.md` and the constitution); add any missing test cases for uncovered
-  branches.
-- [ ] T013 Run lint (`npm run lint` if configured, or the CRA/ESLint output surfaced by
+- [X] T012 Run `npm test --workspace=frontend -- --coverage` and confirm
+  `packages/frontend/src/utils/todoStatus.js` reaches 100% coverage and every new overdue-related
+  branch added to `packages/frontend/src/components/TodoCard.js` (part of the "view todos"
+  critical workflow) is also covered at 100%, per the constitution's Principle II requirement
+  that critical user workflows (create, view, update, delete todo) be covered at 100% — not just
+  the project's general 80%+ target (`docs/testing-guidelines.md`); add any missing test cases
+  for uncovered branches.
+- [X] T013 Run lint (`npm run lint` if configured, or the CRA/ESLint output surfaced by
   `npm test --workspace=frontend`) on all files changed in this feature and fix any
   errors/warnings per `docs/coding-guidelines.md`.
-- [ ] T014 Manually execute the validation steps in
+- [X] T014 Manually execute the validation steps in
   [quickstart.md](/workspaces/ae-bootcamp-lab-6-aschott/specs/001-overdue-todo-items/quickstart.md)
   (past/today/future/no-due-date todos, toggle, edit, dark/light mode) to confirm end-to-end
   behavior matches spec.md Success Criteria SC-001 through SC-004.
