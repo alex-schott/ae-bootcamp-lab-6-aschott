@@ -8,6 +8,12 @@
 
 **Input**: User description: "As a todo application user, I want to easily identify and distinguish overdue tasks in my todo list, so that I can prioritize my work and quickly see which tasks are past their due date. Users need a clear, visual way to identify which todos have not been completed by their due date. This helps users quickly spot overdue items without having to manually check dates against today's date. This feature must include automated tests covering the overdue determination logic and its display, following the existing Jest patterns in the repository."
 
+## Clarifications
+
+### Session 2026-08-17
+
+- Q: Should the overdue indicator rely on color alone, or must it also include a non-color cue (such as text/label or icon) so it's accessible to colorblind users and screen readers? → A: Require a non-color cue (text label like "Overdue" and/or icon) in addition to any color styling — accessible to colorblind users and screen readers
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Visually Identify Overdue Todos (Priority: P1)
@@ -27,8 +33,10 @@ past-due todos are visually marked as overdue in the list.
 **Acceptance Scenarios**:
 
 1. **Given** a todo with a due date earlier than today that is not marked complete, **When**
-   the user views the todo list, **Then** that todo is visibly marked as overdue (e.g. a
-   distinct color, label, or icon) so it stands out from non-overdue todos.
+   the user views the todo list, **Then** that todo is visibly marked as overdue using a
+   non-color cue (e.g. an "Overdue" text label or icon), optionally combined with color, so it
+   stands out from non-overdue todos and remains identifiable to colorblind users and screen
+   reader users.
 2. **Given** a todo with a due date of today, **When** the user views the todo list, **Then**
    that todo is NOT marked as overdue.
 3. **Given** a todo with a due date in the future, **When** the user views the todo list,
@@ -88,7 +96,10 @@ overdue indicator is removed immediately in both cases without a page refresh.
 - **FR-004**: System MUST NOT mark a todo item as overdue if it is marked complete, even if
   its due date has passed.
 - **FR-005**: System MUST visually distinguish overdue todo items from non-overdue todo items
-  in the todo list so users can identify them at a glance without reading each due date.
+  in the todo list so users can identify them at a glance without reading each due date. The
+  distinction MUST include a non-color cue (e.g., an "Overdue" text label or icon), optionally
+  combined with color styling, so the indicator remains perceivable to colorblind users and
+  compatible with screen readers.
 - **FR-006**: System MUST update a todo item's overdue indicator immediately when the user
   toggles its completion status, without requiring a page reload.
 - **FR-007**: System MUST update a todo item's overdue indicator immediately when the user
